@@ -14,6 +14,10 @@ Sin apps. Sin cables obligatorios. Solo abre el navegador y transmite.
 [![Made with Python](https://img.shields.io/badge/Python-3.13-blue.svg?style=flat-square)]()
 [![Status](https://img.shields.io/badge/Estado-Activo-brightgreen.svg?style=flat-square)]()
 
+<br/>
+
+[![Download](https://img.shields.io/badge/⬇️%20Descargar%20Nuvek%20v1.0-D0271D?style=for-the-badge)](https://github.com/JUXCHXX/Nuvek/releases/latest)
+
 </div>
 
 ---
@@ -75,13 +79,17 @@ sudo apt install v4l2loopback-dkms ffmpeg adb
 
 # Activar el dispositivo virtual
 sudo modprobe v4l2loopback devices=1 video_nr=10 card_label="Nuvek Camera" exclusive_caps=1
+
+# Para que /dev/video10 exista automáticamente al arrancar
+echo "v4l2loopback" | sudo tee /etc/modules-load.d/v4l2loopback.conf
+echo 'options v4l2loopback devices=1 video_nr=10 card_label="Nuvek Camera" exclusive_caps=1' | sudo tee /etc/modprobe.d/v4l2loopback.conf
 ```
 
 ### Clonar y correr
 
 ```bash
-git clone https://github.com/tuusuario/nuvek.git
-cd nuvek
+git clone https://github.com/JUXCHXX/Nuvek.git
+cd Nuvek
 
 python3 -m venv venv
 source venv/bin/activate
@@ -104,7 +112,8 @@ update-desktop-database ~/.local/share/applications/
 1. Ejecuta Nuvek en tu PC
 2. Escanea el QR con tu celular
 3. Abre la URL en **Firefox** (requerido por permisos de cámara con HTTPS self-signed)
-4. En OBS: **Fuentes → + → Dispositivo de video → Nuvek Camera**
+4. Acepta el certificado cuando Firefox lo solicite → **Avanzado → Aceptar el riesgo y continuar**
+5. En OBS: **Fuentes → + → Dispositivo de video → Nuvek Camera**
 
 ### Potenciar señal con USB
 
@@ -134,14 +143,15 @@ Nuvek es libre y abierto. Si quieres portar a otra distro de Linux o a Windows, 
 
 ```
 📦 Estructura del proyecto
-nuvek/
-├── main.py              # Entry point
+Nuvek/
+├── main.py                  # Entry point
+├── Nuvek.desktop            # Acceso directo de escritorio
 ├── nuvek/
 │   ├── core/
-│   │   ├── server.py    # Servidor Flask + procesamiento de frames
-│   │   └── virtual_cam.py  # Pipeline ffmpeg → /dev/video10
+│   │   ├── server.py        # Servidor Flask + procesamiento de frames
+│   │   └── virtual_cam.py   # Pipeline ffmpeg → /dev/video10
 │   └── ui/
-│       └── app.py       # Interfaz CustomTkinter
+│       └── app.py           # Interfaz CustomTkinter
 └── requirements.txt
 ```
 
