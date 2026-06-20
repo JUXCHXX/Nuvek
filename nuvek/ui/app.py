@@ -339,7 +339,12 @@ class NuvekApp(ctk.CTk):
         ctk.CTkButton(scroll, text="🔌  Potencia señal",
                       fg_color=GRAY3, hover_color=GRAY4,
                       font=ctk.CTkFont(size=12), height=36, corner_radius=10,
-                      command=self._open_usb).pack(padx=16, fill="x", pady=(0,14))
+                      command=self._open_usb).pack(padx=16, fill="x", pady=(0,6))
+
+        ctk.CTkButton(scroll, text="⚠️  Matar puerto",
+                      fg_color="#3a1a1a", hover_color="#5a2a2a",
+                      font=ctk.CTkFont(size=12), height=36, corner_radius=10,
+                      command=self._kill_port).pack(padx=16, fill="x", pady=(0,14))
 
         ctk.CTkFrame(scroll, height=1, fg_color=GRAY3).pack(fill="x", padx=16, pady=(0,14))
 
@@ -350,6 +355,14 @@ class NuvekApp(ctk.CTk):
         ctk.CTkLabel(scroll, text="Fuentes → + → Dispositivo\nde video → Nuvek Camera",
                      font=ctk.CTkFont(size=10), text_color=MUTED,
                      justify="left").pack(anchor="w", padx=20, pady=(0,20))
+
+    def _kill_port(self):
+        import subprocess
+        result = subprocess.run(
+            "sudo kill -9 $(sudo lsof -t -i:8080) 2>/dev/null; echo ok",
+            shell=True, capture_output=True, text=True
+        )
+        self.server.start()
 
     def _open_monitoreo(self):
         MonitoreoModal(self, self._get_stats)

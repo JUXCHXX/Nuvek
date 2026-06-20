@@ -256,7 +256,7 @@ class NuvekServer:
     def _run(self):
         app.run(host="0.0.0.0", port=PORT,
                 debug=False, use_reloader=False, threaded=True,
-                ssl_context=None)
+                ssl_context=(CERT_PATH, KEY_PATH))
 
     def stop(self):
         pass
